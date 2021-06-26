@@ -1,5 +1,38 @@
 $(function() {
 
+     //CLASSES
+    class GearItem{
+        constructor(index, name,description,type,usage,imgUrl) {
+          this.index = index;
+          this.name = name;
+          this.description = description;
+          this.type = type;
+          this.usage = usage;
+          this.image_url = imgUrl;
+        }
+      }
+
+    //do you have template outfits instead? I'd say you
+    //should, it would make the logic way easier
+    class RideOutfit{
+        constructor(index, name,templateName,description,type,imgUrl) {
+            this.index = index;
+            this.name = name;
+            this.template_name = templateName;
+            this.description = description;
+            this.type = type;
+            this.imageUrl = imgUrl;
+            this.gearItems = [];
+          }
+    }
+
+    class PageController{
+        constructor(searchCity){
+            this.searchCity
+            this.rideOutfits = [];
+        }
+    }
+
     let searchNamesArray = [];
     let cardParentDiv = $("div.card-row");
     let dateCardCnt = 0;
@@ -14,7 +47,7 @@ $(function() {
         .then(function (response) {
         if (response.ok) {
             response.json().then(function (data) {
-                displayForecastData(data);
+                processFetchResponse(data);
             });
         } else {
             //this would be a modal dialog rather than console log
@@ -26,11 +59,15 @@ $(function() {
         });
     }
 
-    //displayForecastData
+    //processFetchResponse
     //mashup layer over display of today's weather and
     //display of 5 day forecast
-    let displayForecastData = data => {
+    let processFetchResponse = data => {
         displayWeatherToday(data);
+
+        //data will be the selected template
+        //have a headline above the carousel for template name
+        addCarouselItem(data);
         //displayForecastCards(data);
     }
 
@@ -112,6 +149,36 @@ $(function() {
         }
     }
 
+    let addCarouselItem = gearItem => {
+        let carouselDivEl = $('div.carousel-inner');
+        let divEl = $('<div>').addClass("carousel-item");
+
+        let imgEl = $('<img>').addClass("d-block w-100");
+        imgEl.attr("src","./assets/images/gloves-road-specialized.jpg");
+        imgEl.attr("data-src","holder.js/900x400?theme=social")
+        imgEl.attr("alt","Road Gloves");
+
+        let divCaptEl = $('<div>').addClass("carousel-content");
+        let h3CaptEl = $('<h3>')
+        h3CaptEl.text("Helmet");
+        divCaptEl.append(h3CaptEl);
+
+        divEl.append(imgEl);
+        divEl.append(divCaptEl);
+        carouselDivEl.append(divEl);
+
+                        // <div class="carousel-item active">
+                        //     <img class="d-block w-100" src="./assets/images/helmet-road.jpg"
+                        //         data-src="holder.js/900x400?theme=social" alt="First slide">
+                        //         <div class="carousel-content">
+                        //             <p>Helmet</p>
+                        //           </div> 
+                        //           <div class="carousel-caption">
+                        //             <h3>Helmet</h3>
+                        //           </div>
+                        // </div>
+    };
+
     //saveSearchCity
     //saves previously search cities in list
     //TODO: Offer 'clear searches' button, or a button for each one to remove
@@ -149,6 +216,16 @@ $(function() {
             ulParentEl.append(liEl);
         });
       };
+
+      let loadTemplateData = () => {
+          let outfit = new RideOutfit(0,"Warm Day Road Ride","road_warm_dry_day","Perfect outfit for a nice sunny ride on the road.","Road","imageUrl");
+          let item = new GearItem(0,"Helmet","Specialized Road Helmet","Helmet","Road","./assets/images/helmet-road.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(1,"Jersey","Capo Road Jersey","Light Jersey","Road","./assets/images/road-jersey-capo");
+          outfit.gearItems.push(item);
+          console.log(JSON.stringify(outfit));
+      }
 
     //initialize main page elements
     let init = () => {
@@ -188,6 +265,8 @@ $(function() {
             //repopulate the list on refresh
             buildSavedSearchCityList();
         }
+
+        loadTemplateData();
     }
 
     init();
