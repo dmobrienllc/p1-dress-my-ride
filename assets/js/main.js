@@ -1,5 +1,7 @@
 $(function() {
 
+    let carouselDivEl = $('div.carousel-inner');
+
      //CLASSES
     class GearItem{
         constructor(index, name,description,type,usage,imgUrl) {
@@ -8,7 +10,7 @@ $(function() {
           this.description = description;
           this.type = type;
           this.usage = usage;
-          this.image_url = imgUrl;
+          this.imgUrl = imgUrl;
         }
       }
 
@@ -65,10 +67,10 @@ $(function() {
     let processFetchResponse = data => {
         displayWeatherToday(data);
 
-        //data will be the selected template
-        //have a headline above the carousel for template name
-        addCarouselItem(data);
-        //displayForecastCards(data);
+        //load the correct template into the carousel based on the weather
+        //the 'type' parm will come from a selector button
+        //in a next branch
+        displayOutfitSelection("mtb",data);
     }
 
     //displayWeatherToday
@@ -149,34 +151,68 @@ $(function() {
         }
     }
 
-    let addCarouselItem = gearItem => {
-        let carouselDivEl = $('div.carousel-inner');
+    let displayOutfitSelection = (type,data) => {
+    
+        //hack the template name until you develop something
+        //more sophisticated
+        let temp;
+        
+        //build the template
+        temp = "warm";
+
+        if(data.list[0].main.temp > 60){
+            temp = "warm";
+        }else{
+            temp = "cool";
+        }
+
+        let template = `${type}_${temp}_dry_day`;
+
+        let outfit = JSON.parse(localStorage.getItem(template));
+        //put outfit name into an h3 or something, for now just load
+        //the carousel
+        
+        $(outfit.gearItems).each(function(index,item){
+            addCarouselItem(index,item)
+        });
+    }
+
+    let updateOutfitSelection = (template) => {
+        let carouselDivTmp = $('div.carousel-inner');
+
+        let success =  $('.carousel-inner,.carousel-indicators,.carousel-control-prev,.carousel-control-next').empty()
+        console.log("Empty Carousel: " + success);
+
+        let outfit = JSON.parse(localStorage.getItem(template));
+        console.log(outfit);
+
+        $(outfit.gearItems).each(function(index,item){
+            addCarouselItem(index,item)
+        });
+    }
+
+    let addCarouselItem = (index,gearItem) => {
+        
+        console.log(gearItem.imgUrl);
         let divEl = $('<div>').addClass("carousel-item");
 
+        if(gearItem.index === 0){
+            divEl.addClass("active");
+        }
+
         let imgEl = $('<img>').addClass("d-block w-100");
-        imgEl.attr("src","./assets/images/gloves-road-specialized.jpg");
+        imgEl.attr("src",gearItem.imgUrl);
         imgEl.attr("data-src","holder.js/900x400?theme=social")
-        imgEl.attr("alt","Road Gloves");
+        imgEl.attr("alt",gearItem.name);
 
         let divCaptEl = $('<div>').addClass("carousel-content");
         let h3CaptEl = $('<h3>')
-        h3CaptEl.text("Helmet");
+        h3CaptEl.text(gearItem.name);
         divCaptEl.append(h3CaptEl);
 
         divEl.append(imgEl);
         divEl.append(divCaptEl);
         carouselDivEl.append(divEl);
-
-                        // <div class="carousel-item active">
-                        //     <img class="d-block w-100" src="./assets/images/helmet-road.jpg"
-                        //         data-src="holder.js/900x400?theme=social" alt="First slide">
-                        //         <div class="carousel-content">
-                        //             <p>Helmet</p>
-                        //           </div> 
-                        //           <div class="carousel-caption">
-                        //             <h3>Helmet</h3>
-                        //           </div>
-                        // </div>
     };
 
     //saveSearchCity
@@ -217,14 +253,62 @@ $(function() {
         });
       };
 
+      //loadTemplateData
+      //we will load directly from storage once we have
+      //a good JSON model to work with
       let loadTemplateData = () => {
+
+          localStorage.setItem("road_warm_dry_day","");
+          localStorage.setItem("mtb_warm_dry_day","");
+
           let outfit = new RideOutfit(0,"Warm Day Road Ride","road_warm_dry_day","Perfect outfit for a nice sunny ride on the road.","Road","imageUrl");
-          let item = new GearItem(0,"Helmet","Specialized Road Helmet","Helmet","Road","./assets/images/helmet-road.jpg");
+          let item = new GearItem(0,"Specialized Road Helmet","Dual Purpose Helmet with removable visor","Helmet","Road","./assets/images/helmet-dual-specialized.jpg");
           outfit.gearItems.push(item);
 
-          item = new GearItem(1,"Jersey","Capo Road Jersey","Light Jersey","Road","./assets/images/road-jersey-capo");
+          item = new GearItem(1,"Capo Road Jersey","Breathable jersey great for hot/warm/humid riding","Jersey","Road","./assets/images/jersey-road-capo.jpg");
           outfit.gearItems.push(item);
-          console.log(JSON.stringify(outfit));
+
+          item = new GearItem(2,"Specialized Lycra Shorts","Super comfortable padded lycra shorts for long road rides.","Shorts","Road","./assets/images/shorts-road-specialized.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(3,"Endura Road Gloves","Excellent road glove with great padding.","Gloves","Road","./assets/images/gloves-road-endura.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(4,"Smart Wool Socks","Smartwool socks, cool and dry on the feet!","Socks","Road","./assets/images/socks-road-smartwool.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(5,"Specialized Road Shoes","High performance road race shoe, carbon plated for power!","Shoes","Road","./assets/images/shoes-road-specialized.jpg");
+          outfit.gearItems.push(item);
+
+          if(!localStorage.getItem("road_warm_dry_day")){
+              localStorage.setItem("road_warm_dry_day",JSON.stringify(outfit));
+          }
+
+          outfit = new RideOutfit(1,"Warm Day MTB Ride","mtb_warm_dry_day","Perfect outfit for a great day tearing it up on the trails.","MTB","imageUrl");
+          item = new GearItem(0,"Specialized MTB Helmet","Dual Purpose Helmet with removable visor","Helmet","MTB","./assets/images/helmet-mtb-specialized.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(1,"LeadVelo T-Shirt","Super Cool LeadVelo t-shirt from Leadville, CO","T-Shirt","MTB","./assets/images/tshirt-mtb-leadvelo.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(2,"Endura MTB Shorts","Super comfortable and stylish shorts for straight from the trail to the brew pub!","Shorts","MTB","./assets/images/shorts-mtb-endura.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(3,"Fox MTB Gloves","Excellent MTB glove with great padding.","Gloves","MTB","./assets/images/gloves-mtb-fox.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(4,"Smart Wool Socks","Smartwool socks, cool and dry on the feet!","Socks","MTB","./assets/images/socks-mtb-smartwool.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(5,"Specialized MTB Shoes","Tough, comfortable mtb shoe for long days on the trail.","Shoes","MTB","./assets/images/shoes-mtb-specialized.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(6,"Poison Spider Cycles Bandana","Keeps you looking and feeling cool!","Bandana","MTB","./assets/images/bandana-mtb-poisonspider.jpg");
+          outfit.gearItems.push(item);
+           
+          if(!localStorage.getItem("mtb_warm_dry_day")){
+            localStorage.setItem("mtb_warm_dry_day",JSON.stringify(outfit));
+        }
       }
 
     //initialize main page elements
@@ -257,6 +341,16 @@ $(function() {
             ulSearchList.empty();
             localStorage.setItem("stored-cities",""); 
             searchNamesArray.length = 0;
+        });
+
+        let selectRoadRadio = $('input#select-road');
+        selectRoadRadio.on('click',function(event){
+            updateOutfitSelection("road_warm_dry_day");
+        });
+
+        let selectMtbRadio = $('input#select-mtb');
+        selectMtbRadio.on('click',function(event){
+            updateOutfitSelection("mtb_warm_dry_day");
         });
 
         if(!localStorage.getItem("stored-cities")){
