@@ -3,6 +3,7 @@
 ## Table of Contents
 1. [General Info](#general-info)
 2. [Screenshot](#screenshot)
+2. [Requirements](#requirements)
 3. [Technologies](#technologies)
 4. [Installation](#installation)
 5. [FAQs](#faqs)
@@ -15,7 +16,51 @@ worn for that days' ride. Also makes recommendations for trip packing based
 on 5 day forecast at any destination.
 
 ### Screenshot
+***
 ![Image text](./assets/images/finished-screenshot.png)
+
+## Requirements
+***
+  USER requires application to assist in picking out gear at a glance for daily rides,
+  ensuring clothes are cleaned and ready for upcoming week, or assisting in packing for
+  trips by analyzing weather for an upcoming period determined by user.
+
+  Phase 1
+  User is presented with the following:
+    -text input and search button allowing input of requested search city
+    -photo carousel with default photo loaded corresponding to selected radio
+    -radio buttons allowing toggling between road and mtb
+    -'Clear Search' button allowing clearing of saved cities.
+
+  User enters search city, selects appropriate apparel type radio button, clicks 'Search' 
+  button, and is presented with:
+    -today's date and weather in the selected city.
+    -a carousel loaded with pictures of appropriate clothing pieces for selected apparel 
+    type. Images will have caption overlaying.
+    
+  User can toggle between apparel type choices and be presented with appropriate choices.
+
+  User search city choices will be saved in left nav.
+
+  Phase 1b
+  User is presented with outfit description above carousel
+
+  Phase 2
+  User is presented with heading describing usage of selected outfit.
+  2 supported templates for cold weather, 1 each for road and mtb
+
+  Phase 3
+  User is able to click image and is presented with multiple choices of same type of
+  gear item; user can select item and it will replace clicked item in carousel and will
+  be saved to ride settings.
+
+ Phase 4
+ User will be able to 
+    
+
+
+
+
 
 ## Technologies
 ***
