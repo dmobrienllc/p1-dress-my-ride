@@ -26,19 +26,29 @@
     <!-- Two column layout -->
     <section class="container-fluid">
         <div class="row">
-            <div class="col-12 col-md-4 col-xl-3">
+            <div class="col-12 col-md-3 col-lg-3 col-xl-3">
                 <h3>Search For A City</h3>
                 <input class="form-control mr-sm-2" id="search-input" type="text" placeholder="Search"
                     aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0  search-button" type="button">Search</button>
             </div>
-            <div class="col-12 col-md-8 col-xl-9">
+            <div class="col-12 col-md-7 col-lg-6 col-xl-5">
                 <h3><span id="today-city"></span> (<span id="today-date"></span>) <span><img id="header-icon" src=""
                             alt="weather icon" title="weather icon"></span> </h3>
                 <p>Temp: <span id="today-temp"></span></p>
                 <p>Wind: <span id="today-wind"></span></p>
                 <p>Humidity: <span id="today-humidity"></span></p>
                 <p>UV Index: <span id="today-uv-index"></span></p>
+            </div>
+            <div>
+            <div class="custom-control custom-radio col-12 col-md-2 col-lg-3 col-xl-4">
+                <input type="radio" id="select-road" data-select-type="road" name="customRadio" class="custom-control-input">
+                <label class="custom-control-label" for="select-road">Road</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input type="radio" id="select-mtb" data-select-type="mtb" name="customRadio" class="custom-control-input">
+                <label class="custom-control-label" for="select-mtb">MTB</label>
+              </div>
             </div>
         </div>
     </section>

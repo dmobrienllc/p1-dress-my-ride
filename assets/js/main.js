@@ -70,7 +70,7 @@ $(function() {
         //load the correct template into the carousel based on the weather
         //the 'type' parm will come from a selector button
         //in a next branch
-        displayOutfitSelection("road",data);
+        displayOutfitSelection("mtb",data);
     }
 
     //displayWeatherToday
@@ -169,12 +169,23 @@ $(function() {
         let template = `${type}_${temp}_dry_day`;
 
         let outfit = JSON.parse(localStorage.getItem(template));
-
-        console.log(outfit);
-
         //put outfit name into an h3 or something, for now just load
         //the carousel
         
+        $(outfit.gearItems).each(function(index,item){
+            addCarouselItem(index,item)
+        });
+    }
+
+    let updateOutfitSelection = (template) => {
+        let carouselDivTmp = $('div.carousel-inner');
+
+        let success =  $('.carousel-inner,.carousel-indicators,.carousel-control-prev,.carousel-control-next').empty()
+        console.log("Empty Carousel: " + success);
+
+        let outfit = JSON.parse(localStorage.getItem(template));
+        console.log(outfit);
+
         $(outfit.gearItems).each(function(index,item){
             addCarouselItem(index,item)
         });
@@ -248,7 +259,7 @@ $(function() {
       let loadTemplateData = () => {
 
           localStorage.setItem("road_warm_dry_day","");
-          localStorage.setItem("mtb_warm_dry_day");
+          localStorage.setItem("mtb_warm_dry_day","");
 
           let outfit = new RideOutfit(0,"Warm Day Road Ride","road_warm_dry_day","Perfect outfit for a nice sunny ride on the road.","Road","imageUrl");
           let item = new GearItem(0,"Specialized Road Helmet","Dual Purpose Helmet with removable visor","Helmet","Road","./assets/images/helmet-dual-specialized.jpg");
@@ -294,7 +305,7 @@ $(function() {
 
           item = new GearItem(6,"Poison Spider Cycles Bandana","Keeps you looking and feeling cool!","Bandana","MTB","./assets/images/bandana-mtb-poisonspider.jpg");
           outfit.gearItems.push(item);
-
+           
           if(!localStorage.getItem("mtb_warm_dry_day")){
             localStorage.setItem("mtb_warm_dry_day",JSON.stringify(outfit));
         }
@@ -330,6 +341,16 @@ $(function() {
             ulSearchList.empty();
             localStorage.setItem("stored-cities",""); 
             searchNamesArray.length = 0;
+        });
+
+        let selectRoadRadio = $('input#select-road');
+        selectRoadRadio.on('click',function(event){
+            updateOutfitSelection("road_warm_dry_day");
+        });
+
+        let selectMtbRadio = $('input#select-mtb');
+        selectMtbRadio.on('click',function(event){
+            updateOutfitSelection("mtb_warm_dry_day");
         });
 
         if(!localStorage.getItem("stored-cities")){
