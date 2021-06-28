@@ -126,16 +126,22 @@ $(function() {
     
         let success =  $('.carousel-inner,.carousel-indicators,.carousel-control-prev,.carousel-control-next').empty()
 
-        //hack the template name until you develop something
-        //more sophisticated
         let temp;
         let dayNight;
         
-        let typeSelected = $("input[name='customRadio']:checked").val();
+        let typeSelected = $("input[name='customRadio'][type='radio']:checked").val();
 
+        //we will have a more finely graded test
+        //here, this works out of the gate
         if(data.list[0].main.temp > 60){
             temp = "warm";
         }else{
+            temp = "cool";
+        }
+
+        //until we have colder weather offer opportunity 
+        //for cold-weather override
+        if($('#temp-override-check').prop('checked')){
             temp = "cool";
         }
 
@@ -146,6 +152,8 @@ $(function() {
         }
 
         let template = `${typeSelected}_${temp}_dry_${dayNight}`;
+
+        console.log("Template: " + template);
 
         let outfit = JSON.parse(localStorage.getItem(template));
 
@@ -203,6 +211,10 @@ $(function() {
         let h3CaptEl = $('<h3>')
         h3CaptEl.text('');
         h3CaptEl.text(gearItem.name);
+
+        let pCaptEl = $("<p>");
+        pCaptEl.text(gearItem.description);
+        h3CaptEl.append(pCaptEl);
         divCaptEl.append(h3CaptEl);
 
         divEl.append(imgEl);
@@ -222,7 +234,7 @@ $(function() {
         $('h3#outfit-description').text('');
 
         if(outfitType === "mtb"){
-            gearItem = new GearItem(0,"Lynskey Ridgeline 29 MTB","Super-tough and strong titanium and carbon MTB.","Bike","mtb","./assets/images/bike-mtb.jpg");
+            gearItem = new GearItem(0,"Lynskey Ridgeline 29 MTB","Super strong titanium and carbon MTB.","Bike","mtb","./assets/images/bike-mtb.jpg");
             addCarouselItem(0,gearItem);
             $('h3#outfit-description').text(gearItem.name + ": " + gearItem.description);
         }else{
@@ -282,12 +294,17 @@ $(function() {
       let loadTemplateData = () => {
 
           localStorage.setItem("road_warm_dry_day","");
+          localStorage.setItem("road_cool_dry_day","");
           localStorage.setItem("road_warm_dry_night","");
+          localStorage.setItem("road_cool_dry_night","");
+
           localStorage.setItem("mtb_warm_dry_day","");
           localStorage.setItem("mtb_warm_dry_night","");
+          localStorage.setItem("mtb_cool_dry_day","");
+          localStorage.setItem("mtb_cool_dry_night","");
 
           //BEGIN road_warm_dry_day
-          let outfit = new RideOutfit(0,"Warm Day Road Ride","road_warm_dry_day","Perfect outfit for a nice sunny ride on the road.","Road","imageUrl");
+          let outfit = new RideOutfit(0,"Warm Day Road Ride","road_warm_dry_day","Perfect gear for a nice sunny ride on the road.","Road","imageUrl");
           let item = new GearItem(0,"Specialized Road Helmet","Dual Purpose Helmet with removable visor","Helmet","Road","./assets/images/helmet-dual-specialized.jpg");
           outfit.gearItems.push(item);
 
@@ -312,8 +329,40 @@ $(function() {
 
           //END road_warm_dry_day
 
+          //BEGIN road_cold_dry_day
+          outfit = new RideOutfit(1,"Cold Day Road Ride","road_cool_dry_day","When you need to get in the k's but it's cccoooolllddd out there!","Road","imageUrl");
+          item = new GearItem(0,"Specialized Road Helmet","Dual Purpose Helmet with removable visor","Helmet","Road","./assets/images/helmet-dual-specialized.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(1,"Endura Road Jacket","Hardcore jacket for cold/rainy riding","Jacket","Dual","./assets/images/jacket-dual-endura.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(2,"Specialized Lycra Bibs","Super warm padded lycra shorts for cold rides.","Bibs","Dual","./assets/images/bibs-dual-specialized.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(3,"Endura Road Lobster Mitts","Super warm mitt for cold weather riding.","Gloves","Dual","./assets/images/gloves-dual-endura.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(4,"Smart Wool Socks","Smartwool socks, super warm for cold days!","Socks","Dual","./assets/images/socks-road-smartwool.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(5,"Specialized Road Shoes","High performance road race shoe, carbon plated for power!","Shoes","Road","./assets/images/shoes-road-specialized.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(6,"Specialized Shoe Warmers","Wind and water proof road shoe warmer!","Shoes","Road","./assets/images/shoewarmer-road-endura.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(7,"Melanzana Balaclava","Windproof balaclava is the only way to go in the cold!","Balaclava","Dual","./assets/images/balaclava-dual-melanzana.jpg");
+          outfit.gearItems.push(item);
+
+          if(!localStorage.getItem("road_cool_dry_day")){
+              localStorage.setItem("road_cool_dry_day",JSON.stringify(outfit));
+          }
+
+          //END road_cold_dry_day
+
           //BEGIN road_warm_dry_night
-          outfit = new RideOutfit(1,"Warm Night Road Ride","road_warm_dry_night","Perfect setup for a nice nighttime cruise.","Road","imageUrl");
+          outfit = new RideOutfit(2,"Warm Night Road Ride","road_warm_dry_night","Perfect setup for a nice nighttime cruise.","Road","imageUrl");
           item = new GearItem(0,"Nightsun Lighting System","Dual Purpose Light System With Taillight","Lighting","Dual","./assets/images/lighting-dual-nightsun.jpg");
           outfit.gearItems.push(item);
           
@@ -340,15 +389,50 @@ $(function() {
           }
           //END road_warm_dry_night
 
+        //BEGIN road_cold_dry_night
+        outfit = new RideOutfit(3,"Cold Night Road Ride","road_cool_dry_night","When you need to get in the k's but it's cold and dark out there!","Road","imageUrl");
+        item = new GearItem(0,"Nightsun Lighting System","Dual Purpose Light System With Taillight","Lighting","Dual","./assets/images/lighting-dual-nightsun.jpg");
+          outfit.gearItems.push(item);
+        
+        item = new GearItem(1,"Specialized Road Helmet","Dual Purpose Helmet with removable visor","Helmet","Road","./assets/images/helmet-dual-specialized.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(2,"Endura Road Jacket","Hardcore jacket for cold/rainy riding","Jacket","Dual","./assets/images/jacket-dual-endura.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(3,"Specialized Lycra Bibs","Super warm padded lycra shorts for cold rides.","Bibs","Dual","./assets/images/bibs-dual-specialized.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(4,"Endura Road Lobster Mitts","Super warm mitt for cold weather riding.","Gloves","Dual","./assets/images/gloves-dual-endura.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(5,"Smart Wool Socks","Smartwool socks, super warm for cold days!","Socks","Dual","./assets/images/socks-road-smartwool.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(6,"Specialized Road Shoes","High performance road race shoe, carbon plated for power!","Shoes","Road","./assets/images/shoes-road-specialized.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(7,"Specialized Shoe Warmers","Wind and water proof road shoe warmer!","Shoes","Road","./assets/images/shoewarmer-road-endura.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(8,"Melanzana Balaclava","Windproof balaclava is the only way to go in the cold!","Balaclava","Dual","./assets/images/balaclava-dual-melanzana.jpg");
+          outfit.gearItems.push(item);
+
+        if(!localStorage.getItem("road_cool_dry_night")){
+            localStorage.setItem("road_cool_dry_night",JSON.stringify(outfit));
+        }
+
+        //END road_cold_dry_night
+
           //BEGIN mtb_warm_dry_day
-          outfit = new RideOutfit(2,"Warm Day MTB Ride","mtb_warm_dry_day","Perfect outfit for a great day tearing it up on the trails.","MTB","imageUrl");
+          outfit = new RideOutfit(4,"Warm Day MTB Ride","mtb_warm_dry_day","Perfect gear for a great day tearing it up on the trails.","MTB","imageUrl");
           item = new GearItem(0,"Specialized MTB Helmet","Dual Purpose Helmet with removable visor","Helmet","MTB","./assets/images/helmet-mtb-specialized.jpg");
           outfit.gearItems.push(item);
 
           item = new GearItem(1,"LeadVelo T-Shirt","Super Cool LeadVelo t-shirt from Leadville, CO","T-Shirt","MTB","./assets/images/tshirt-mtb-leadvelo.jpg");
           outfit.gearItems.push(item);
 
-          item = new GearItem(2,"Endura MTB Shorts","Super comfortable and stylish shorts for straight from the trail to the brew pub!","Shorts","MTB","./assets/images/shorts-mtb-endura.jpg");
+          item = new GearItem(2,"Endura MTB Shorts","Super functional shorts; from the trail to the brew pub!","Shorts","MTB","./assets/images/shorts-mtb-endura.jpg");
           outfit.gearItems.push(item);
 
           item = new GearItem(3,"Fox MTB Gloves","Excellent MTB glove with great padding.","Gloves","MTB","./assets/images/gloves-mtb-fox.jpg");
@@ -370,7 +454,7 @@ $(function() {
         //END mtb_warm_dry_day
 
         //BEGIN mtb_warm_dry_night
-          outfit = new RideOutfit(3,"Warm Night MTB Ride","mtb_warm_dry_night","Perfect outfit for a nighttime raid tearing it up on the trails.","MTB","imageUrl");
+          outfit = new RideOutfit(5,"Warm Night MTB Ride","mtb_warm_dry_night","Perfect setup for a nighttime raid!","MTB","imageUrl");
           item = new GearItem(0,"Nightsun Lighting System","Dual Purpose Light System With Taillight","Lighting","Dual","./assets/images/lighting-dual-nightsun.jpg");
           outfit.gearItems.push(item);
           
@@ -380,7 +464,7 @@ $(function() {
           item = new GearItem(2,"LeadVelo T-Shirt","Super Cool LeadVelo t-shirt from Leadville, CO","T-Shirt","MTB","./assets/images/tshirt-mtb-leadvelo.jpg");
           outfit.gearItems.push(item);
 
-          item = new GearItem(3,"Endura MTB Shorts","Super comfortable and stylish shorts for straight from the trail to the brew pub!","Shorts","MTB","./assets/images/shorts-mtb-endura.jpg");
+          item = new GearItem(3,"Endura MTB Shorts","Super functional shorts; from the trail to the brew pub!","Shorts","MTB","./assets/images/shorts-mtb-endura.jpg");
           outfit.gearItems.push(item);
 
           item = new GearItem(4,"Fox MTB Gloves","Excellent MTB glove with great padding.","Gloves","MTB","./assets/images/gloves-mtb-fox.jpg");
@@ -399,20 +483,70 @@ $(function() {
             localStorage.setItem("mtb_warm_dry_night",JSON.stringify(outfit));
             }
         //END mtb_warm_dry_night
+
+        //BEGIN mtb_cold_dry_day
+        outfit = new RideOutfit(6,"Cold Day MTB Ride","mtb_cool_dry_day","Super warm outfit for a cold day on the trails.","MTB","imageUrl");
+        item = new GearItem(0,"Specialized MTB Helmet","Dual Purpose Helmet with removable visor","Helmet","MTB","./assets/images/helmet-mtb-specialized.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(1,"Three Rivers Hat and Buff","Warm and versatile hat/buff combo","Hat","MTB","./assets/images/hat-dual-threerivers.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(2,"Endura MTB Jacket","Hardcore jacket for cold/rainy riding","Jacket","Dual","./assets/images/jacket-dual-endura.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(3,"Kuhl MTB Pants","Super warm, mountain stylish, the perfect pants.","Pants","MTB","./assets/images/pants-mtb-kuhl.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(4,"Endura MTB Lobster Mitts","Super warm mitt for cold weather riding.","Gloves","Dual","./assets/images/gloves-dual-endura.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(5,"Smart Wool Socks","Smartwool socks, cool and dry on the feet!","Socks","MTB","./assets/images/socks-mtb-smartwool.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(6,"Lake Winter MTB Boots","Tough, comfortable mtb boot for cold days on the trail.","Boots","MTB","./assets/images/shoes-mtb-lake-winter.jpg");
+        outfit.gearItems.push(item);
+         
+        if(!localStorage.getItem("mtb_cool_dry_day")){
+          localStorage.setItem("mtb_cool_dry_day",JSON.stringify(outfit));
+          }
+
+      //END mtb_cold_dry_day
+
+      //BEGIN mtb_cold_dry_night
+        outfit = new RideOutfit(7,"Cold Night MTB Ride","mtb_cool_dry_night","Super warm outfit for a cold night adventure!","MTB","imageUrl");
+        item = new GearItem(0,"Nightsun Lighting System","Dual Purpose Light System With Taillight","Lighting","Dual","./assets/images/lighting-dual-nightsun.jpg");
+        outfit.gearItems.push(item);
+        
+        item = new GearItem(1,"Specialized MTB Helmet","Dual Purpose Helmet with removable visor","Helmet","MTB","./assets/images/helmet-mtb-specialized.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(2,"Three Rivers Hat and Buff","Warm and versatile hat/buff combo","Hat","MTB","./assets/images/hat-dual-threerivers.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(3,"Endura MTB Jacket","Hardcore jacket for cold/rainy riding","Jacket","Dual","./assets/images/jacket-dual-endura.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(4,"Kuhl MTB Pants","Super warm, mountain stylish, pub ride or hard ride!","Pants","MTB","./assets/images/pants-mtb-kuhl.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(5,"Endura MTB Lobster Mitts","Super warm mitt for cold weather riding.","Gloves","Dual","./assets/images/gloves-dual-endura.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(6,"Smart Wool Socks","Smartwool socks, cool and dry on the feet!","Socks","MTB","./assets/images/socks-mtb-smartwool.jpg");
+        outfit.gearItems.push(item);
+
+        item = new GearItem(7,"Lake Winter MTB Boots","Tough, comfortable mtb boot for cold days on the trail.","Boots","MTB","./assets/images/shoes-mtb-lake-winter.jpg");
+        outfit.gearItems.push(item);
+         
+        if(!localStorage.getItem("mtb_cool_dry_night")){
+          localStorage.setItem("mtb_cool_dry_night",JSON.stringify(outfit));
+          }
+          //END mtb_cold_dry_night
       }
 
     //initialize main page elements
     let init = () => {
-
-        // let citySpan = $("span#today-city");
-        // let dateSpan = $("span#today-date");
-        // citySpan.text("Your city here")
-        // dateSpan.text(moment().format("MM/DD/YYYY"));
-
-        // $("span#today-temp").text('XX F');
-        // $("span#today-wind").text('XX MPH');
-        // $("span#today-humidity").text('XX %')
-        // $("span#today-uv-index").text('33')
 
         //event delegation for saved search cities
         let containerDiv = $("div#saved-search-parent");
@@ -443,10 +577,6 @@ $(function() {
             searchNamesArray.length = 0;
             clearCarousel();
             clearWeatherToday();
-
-            //make sure to present default carousel item again
-            //default radio button to 'road'
-            //uncheck night ride
             addDefaultCarouselItem('road');
             $('input#select-road').prop('checked', true);
         });
