@@ -49,10 +49,10 @@ on 5 day forecast at any destination.
   User is presented with heading describing usage of selected outfit.
 
   Phase 1d
-  User is presented with radio buttons allowing choice to ride at night
-  or not (should this just be a checkbox?
-  If user selects 'yes', template is loaded containing clothes for 
-  the conditions but also headlamp and taillight system.)
+  User is presented with checkbox allowing choice to ride at night
+  or not.
+  If user checks box, template is loaded containing clothes for the 
+  conditions and also headlamp and taillight system.
 
   Phase 1e
   Add 2 supported templates for cold weather, 1 each for road and mtb
