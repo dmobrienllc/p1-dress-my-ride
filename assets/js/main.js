@@ -71,6 +71,9 @@ $(function() {
     //displayWeatherToday
     //displays today's weather in main card
     let displayWeatherToday = data => {
+        let welcomeSpan = $("span#today-welcome");
+        welcomeSpan.text('');
+
         let citySpan = $("span#today-city");
         let dateSpan = $("span#today-date");
         let imgEl = $("img#header-icon");
@@ -81,7 +84,7 @@ $(function() {
 
         citySpan.text(data.city.name);
         dateSpan.text(moment(data.list[0].dt_txt.substring(0,10),"YYYY-MM-DD").format("M/D/YYYY"));
-        tempSpan.text(data.list[0].main.temp + " F°");
+        tempSpan.text(data.list[0].main.temp + " F");
         windSpan.text(data.list[0].wind.speed + " MPH");
         humSpan.text(data.list[0].main.humidity + "%");
         uvIndexSpan.text("33");
@@ -91,6 +94,9 @@ $(function() {
     }
 
     let clearWeatherToday = () => {
+        let welcomeSpan = $("span#today-welcome");
+        welcomeSpan.text("...when simply looking out the window doesn't cut it.");
+
         let citySpan = $("span#today-city");
         let dateSpan = $("span#today-date");
         let imgEl = $("img#header-icon");
@@ -99,74 +105,27 @@ $(function() {
         let humSpan = $("span#today-humidity");
         let uvIndexSpan = $("span#today-uv-index");
 
-        citySpan.text("Your City Here");
-        dateSpan.text("MM/DD/YYYY");
-        tempSpan.text("XX F°");
-        windSpan.text("XX MPH");
-        humSpan.text( "XX %");
-        uvIndexSpan.text("XX");
-    }
+        citySpan.text('');
+        dateSpan.text('');
+        tempSpan.text('');
+        windSpan.text('');
+        humSpan.text('');
+        uvIndexSpan.text('');
 
-    //displayForecastCards
-    //clears card row of previous cards and builds new row
-    let displayForecastCards = data => {
-        var cardDiv = document.getElementById("card-row"); 
-    
-        $('div.remove-card-div').remove()
-         
-        $(data.list).each(function(index) {
-            buildForecastCard(index,this);
-          });
-          //reset counter, this only controls one output
-          dateCardCnt = 0;
-    }
-
-    ///Only includes 9AM dates for now, easiest way to just
-    //get 5 days out there
-    let buildForecastCard = (index,input) => {
-    
-        let ulSavedCities =   $("#saved-search-cities");
-        
-        //we don't want the first one as that is the one we built our header
-        //date with, then only take 9AM for now. do this more elegantly later
-        //for now it works. 
-        //TODO: Replace saved search cities card with column
-        if(index>0 && input.dt_txt.includes("06:00:00") && dateCardCnt<5){
-            dateCardCnt++;
-
-            let cardDivEl = $("<div>")
-                .addClass("col-10 col-md-4 col-lg-2 m-.5 bg-dark text-light remove-card-div");
-            let h3El = $("<h3>");
-            let imgEl = $("<img>");
-            let pTempEL = $("<p>");
-            let pWindEL = $("<p>");
-            let pHumEL = $("<p>");
-
-            h3El.text(moment(input.dt_txt.substring(0,10),"YYYY-MM-DD").format("M/D/YYYY"));
-
-            let iconCode = input.weather[0].icon;
-            imgEl.attr("src",`http://openweathermap.org/img/w/${iconCode}.png`);
-            imgEl.attr("alt","weather icon");
-            imgEl.attr("title","weather icon");
-        
-            pTempEL.text("Temp: " + input.main.temp + " F°");
-            pWindEL.text("Wind: " + input.wind.speed + " MPH");
-            pHumEL.text("Humidity: " + input.main.humidity + " %");
-
-            //build structure
-            cardDivEl.append(h3El);
-            cardDivEl.append(imgEl);
-            cardDivEl.append(pTempEL);
-            cardDivEl.append(pWindEL);
-            cardDivEl.append(pHumEL);
-            cardParentDiv.append(cardDivEl);
-        }
+        // citySpan.text("Your City Here");
+        // dateSpan.text("MM/DD/YYYY");
+        // tempSpan.text("XX F°");
+        // windSpan.text("XX MPH");
+        // humSpan.text( "XX %");
+        // uvIndexSpan.text("XX");
     }
 
     //displayOutfitSelection
     //displays selection for type; 
     let displayOutfitSelection = (data) => {
     
+        let success =  $('.carousel-inner,.carousel-indicators,.carousel-control-prev,.carousel-control-next').empty()
+
         //hack the template name until you develop something
         //more sophisticated
         let temp;
@@ -188,12 +147,9 @@ $(function() {
 
         let template = `${typeSelected}_${temp}_dry_${dayNight}`;
 
-        alert(template);
-
         let outfit = JSON.parse(localStorage.getItem(template));
 
-        console.log(outfit);
-
+        $('h3#outfit-description').text('');
         $('h3#outfit-description').text(outfit.description);
 
         $(outfit.gearItems).each(function(index,item){
@@ -201,7 +157,7 @@ $(function() {
         });
     }
 
-    let updateOutfitSelection = (template) => {
+    let updateOutfitSelection = (outfitType,template) => {
         //TODO: Consider handling return false?
         let success =  $('.carousel-inner,.carousel-indicators,.carousel-control-prev,.carousel-control-next').empty()
 
@@ -214,15 +170,23 @@ $(function() {
             let outfit = JSON.parse(localStorage.getItem(template));
 
             $(outfit.gearItems).each(function(index,item){
-            addCarouselItem(index,item)
-        });
+                addCarouselItem(index,item)
+            });
+        }else{
+            //add default item back again based on radio button type clicked
+            //this could be more elegant
+            if(outfitType === "road"){
+                addDefaultCarouselItem("road");
+            }else{
+                addDefaultCarouselItem("mtb");
+            }
         }
-        
     }
 
+    //addCarouselItem
+    //adds one individual item to carousel
     let addCarouselItem = (index,gearItem) => {
         
-        console.log(gearItem.imgUrl);
         let divEl = $('<div>').addClass("carousel-item");
 
         if(gearItem.index === 0){
@@ -231,18 +195,50 @@ $(function() {
 
         let imgEl = $('<img>').addClass("d-block w-100");
         imgEl.attr("src",gearItem.imgUrl);
-        imgEl.attr("data-src","holder.js/900x400?theme=social")
+        imgEl.attr("data-src",gearItem.imgUrl)
         imgEl.attr("alt",gearItem.name);
+        imgEl.attr("value",gearItem.index)
 
         let divCaptEl = $('<div>').addClass("carousel-content");
         let h3CaptEl = $('<h3>')
+        h3CaptEl.text('');
         h3CaptEl.text(gearItem.name);
         divCaptEl.append(h3CaptEl);
 
         divEl.append(imgEl);
         divEl.append(divCaptEl);
         carouselDivEl.append(divEl);
+
+        //event handler facilitating choosing different item
+        //from same class
+        imgEl.on('click',function(event){
+            console.log("Img Id: " + $(this).attr("value"));
+        });
     };
+
+    let addDefaultCarouselItem = (outfitType) =>{
+        let gearItem;
+
+        $('h3#outfit-description').text('');
+
+        if(outfitType === "mtb"){
+            gearItem = new GearItem(0,"Lynskey Ridgeline 29 MTB","Super-tough and strong titanium and carbon MTB.","Bike","mtb","./assets/images/bike-mtb.jpg");
+            addCarouselItem(0,gearItem);
+            $('h3#outfit-description').text(gearItem.name + ": " + gearItem.description);
+        }else{
+            gearItem = new GearItem(0,"Specialized Road Bike","Super-light and strong carbon road ride.","Bike","road","./assets/images/bike-road.jpg");
+            addCarouselItem(0,gearItem);
+            $('h3#outfit-description').text(gearItem.name + ": " + gearItem.description);
+        }
+    };
+
+      //clearCarousel
+    //clears carousel and replaces default image
+    //TODO: Need default image
+    let clearCarousel = () => {
+        let success =  $('.carousel-inner,.carousel-indicators,.carousel-control-prev,.carousel-control-next').empty()
+        $('h3#outfit-description').text("");
+    }
 
     //saveSearchCity
     //saves previously search cities in list
@@ -255,17 +251,8 @@ $(function() {
             searchNamesArray.push(city);
             let stringifiedArray = JSON.stringify(searchNamesArray);
             localStorage.setItem("stored-cities",stringifiedArray);
+            buildSavedSearchCityList();
         }
-
-        buildSavedSearchCityList();
-    }
-
-    //clearCarousel
-    //clears carousel and replaces default image
-    //TODO: Need default image
-    let clearCarousel = () => {
-        let success =  $('.carousel-inner,.carousel-indicators,.carousel-control-prev,.carousel-control-next').empty()
-        $('h3#outfit-description').text("");
     }
 
     //buildSavedSearchCityList
@@ -417,15 +404,15 @@ $(function() {
     //initialize main page elements
     let init = () => {
 
-        let citySpan = $("span#today-city");
-        let dateSpan = $("span#today-date");
-        citySpan.text("Your city here")
-        dateSpan.text(moment().format("MM/DD/YYYY"));
+        // let citySpan = $("span#today-city");
+        // let dateSpan = $("span#today-date");
+        // citySpan.text("Your city here")
+        // dateSpan.text(moment().format("MM/DD/YYYY"));
 
-        $("span#today-temp").text('XX F');
-        $("span#today-wind").text('XX MPH');
-        $("span#today-humidity").text('XX %')
-        $("span#today-uv-index").text('33')
+        // $("span#today-temp").text('XX F');
+        // $("span#today-wind").text('XX MPH');
+        // $("span#today-humidity").text('XX %')
+        // $("span#today-uv-index").text('33')
 
         //event delegation for saved search cities
         let containerDiv = $("div#saved-search-parent");
@@ -438,9 +425,14 @@ $(function() {
         let searchButton = $("button.search-button");
         searchButton.on('click',function(event){
             let searchInput = $("input#search-input").val();
-            fetchForecastData(searchInput);
-            saveSearchCity(searchInput);
-            $("input#search-input").val('')
+
+            if(searchInput.length > 0){
+                fetchForecastData(searchInput);
+                saveSearchCity(searchInput);
+                $("input#search-input").val('')
+            }else{
+                alert("You must enter a city name!");
+            }
         });
 
         let clearSearchButton = $("button.clear-search-button");
@@ -451,6 +443,12 @@ $(function() {
             searchNamesArray.length = 0;
             clearCarousel();
             clearWeatherToday();
+
+            //make sure to present default carousel item again
+            //default radio button to 'road'
+            //uncheck night ride
+            addDefaultCarouselItem('road');
+            $('input#select-road').prop('checked', true);
         });
 
         let selectRoadRadio = $('input#select-road');
@@ -459,8 +457,6 @@ $(function() {
             let outfitType = $(this).attr('data-select-type'); 
             updateOutfitSelection(outfitType,"road_warm_dry_day");
         });
-
-        $('input#select-road').prop('checked', true);
 
         let selectMtbRadio = $('input#select-mtb');
         selectMtbRadio.on('click',function(event){
@@ -472,11 +468,12 @@ $(function() {
         if(!localStorage.getItem("stored-cities")){
             storedSearchCities = localStorage.setItem("stored-cities",""); 
         }else{
-            //repopulate the list on refresh
             buildSavedSearchCityList();
         }
 
+        $('input#select-road').prop('checked', true);
         loadTemplateData();
+        addDefaultCarouselItem();
     }
 
     init();

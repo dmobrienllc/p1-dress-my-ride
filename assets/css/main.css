@@ -50,6 +50,11 @@ body {
     text-align: center;
  }
 
+ div #radio-parent-container{
+   border-radius: 1px;
+   border:solid;
+   border-color: black;
+ }
 
   #today-uv-index{
     background-color: yellow;
