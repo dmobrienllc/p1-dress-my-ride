@@ -43,7 +43,7 @@ $(function() {
     //returns data from openweather api in json format
     let fetchForecastData = city =>{
         const apiKey = "1602cf34096adba596dbd657831f5ce9";
-        let queryURL = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&cnt=65&appid=${apiKey}`;
+        let queryURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&cnt=65&appid=${apiKey}`;
         
         fetch(queryURL)
         .then(function (response) {
