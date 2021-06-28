@@ -52,7 +52,6 @@ $(function() {
                 processFetchResponse(data);
             });
         } else {
-            //this would be a modal dialog rather than console log
             console.log('Not OK: ' + response.statusText);
         }
         })
@@ -67,10 +66,9 @@ $(function() {
     let processFetchResponse = data => {
         displayWeatherToday(data);
 
-        //load the correct template into the carousel based on the weather
-        //the 'type' parm will come from a selector button
-        //in a next branch
-        displayOutfitSelection("mtb",data);
+        let typeSelected = $("input[name='customRadio']:checked").val();
+
+       displayOutfitSelection(typeSelected,data);
     }
 
     //displayWeatherToday
@@ -93,6 +91,23 @@ $(function() {
 
         let iconCode = data.list[0].weather[0].icon;
         imgEl.attr("src",`http://openweathermap.org/img/w/${iconCode}.png`);
+    }
+
+    let clearWeatherToday = () => {
+        let citySpan = $("span#today-city");
+        let dateSpan = $("span#today-date");
+        let imgEl = $("img#header-icon");
+        let tempSpan = $("span#today-temp");
+        let windSpan = $("span#today-wind");
+        let humSpan = $("span#today-humidity");
+        let uvIndexSpan = $("span#today-uv-index");
+
+        citySpan.text("Your City Here");
+        dateSpan.text("MM/DD/YYYY");
+        tempSpan.text("XX F°");
+        windSpan.text("XX MPH");
+        humSpan.text( "XX %");
+        uvIndexSpan.text("XX");
     }
 
     //displayForecastCards
@@ -151,44 +166,49 @@ $(function() {
         }
     }
 
-    let displayOutfitSelection = (type,data) => {
+    //displayOutfitSelection
+    //displays selection for type; 
+    let displayOutfitSelection = (typeSelected,data) => {
     
         //hack the template name until you develop something
         //more sophisticated
         let temp;
         
-        //build the template
-        temp = "warm";
-
         if(data.list[0].main.temp > 60){
             temp = "warm";
         }else{
             temp = "cool";
         }
 
-        let template = `${type}_${temp}_dry_day`;
+        //more templates coming on line soon; 
+        let template = `${typeSelected}_${temp}_dry_day`;
 
         let outfit = JSON.parse(localStorage.getItem(template));
-        //put outfit name into an h3 or something, for now just load
-        //the carousel
-        
+
+        $('h3#outfit-description').text(outfit.description);
+
         $(outfit.gearItems).each(function(index,item){
             addCarouselItem(index,item)
         });
     }
 
     let updateOutfitSelection = (template) => {
-        let carouselDivTmp = $('div.carousel-inner');
-
+        //TODO: Consider handling return false?
         let success =  $('.carousel-inner,.carousel-indicators,.carousel-control-prev,.carousel-control-next').empty()
-        console.log("Empty Carousel: " + success);
 
-        let outfit = JSON.parse(localStorage.getItem(template));
-        console.log(outfit);
+        //first need to check if there is a value in the search text 
+        //input, if not don't display
+        let searchInputVal = $('input#search-input').val();
 
-        $(outfit.gearItems).each(function(index,item){
+        if(searchInputVal.length > 0)
+        {
+            let outfit = JSON.parse(localStorage.getItem(template));
+
+            $(outfit.gearItems).each(function(index,item){
             addCarouselItem(index,item)
         });
+        }
+        
     }
 
     let addCarouselItem = (index,gearItem) => {
@@ -226,10 +246,17 @@ $(function() {
             searchNamesArray.push(city);
             let stringifiedArray = JSON.stringify(searchNamesArray);
             localStorage.setItem("stored-cities",stringifiedArray);
-            console.log(stringifiedArray);
         }
 
         buildSavedSearchCityList();
+    }
+
+    //clearCarousel
+    //clears carousel and replaces default image
+    //TODO: Need default image
+    let clearCarousel = () => {
+        let success =  $('.carousel-inner,.carousel-indicators,.carousel-control-prev,.carousel-control-next').empty()
+        $('h3#outfit-description').text("");
     }
 
     //buildSavedSearchCityList
@@ -317,7 +344,12 @@ $(function() {
         let citySpan = $("span#today-city");
         let dateSpan = $("span#today-date");
         citySpan.text("Your city here")
-        dateSpan.text(moment().format("M/D/YYYY"));
+        dateSpan.text(moment().format("MM/DD/YYYY"));
+
+        $("span#today-temp").text('XX F');
+        $("span#today-wind").text('XX MPH');
+        $("span#today-humidity").text('XX %')
+        $("span#today-uv-index").text('33')
 
         //event delegation for saved search cities
         let containerDiv = $("div#saved-search-parent");
@@ -341,16 +373,24 @@ $(function() {
             ulSearchList.empty();
             localStorage.setItem("stored-cities",""); 
             searchNamesArray.length = 0;
+            clearCarousel();
+            clearWeatherToday();
         });
 
         let selectRoadRadio = $('input#select-road');
         selectRoadRadio.on('click',function(event){
-            updateOutfitSelection("road_warm_dry_day");
+            $('h3#outfit-description').text("");
+            let outfitType = $(this).attr('data-select-type'); 
+            updateOutfitSelection(outfitType,"road_warm_dry_day");
         });
+
+        $('input#select-road').prop('checked', true);
 
         let selectMtbRadio = $('input#select-mtb');
         selectMtbRadio.on('click',function(event){
-            updateOutfitSelection("mtb_warm_dry_day");
+            $('h3#outfit-description').text("");
+            let outfitType = $(this).attr('data-select-type'); 
+            updateOutfitSelection(outfitType,"mtb_warm_dry_day");
         });
 
         if(!localStorage.getItem("stored-cities")){

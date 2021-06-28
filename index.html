@@ -17,8 +17,13 @@
     <header class="container-fluid bg-dark text-light mb-5 p-3">
         <div class="d-flex align-items-center">
             <h1>dress-my-ride</h1>
+            <!-- <h3 class="ml-auto">
+                ....when simply looking out the window is unsatisfying.
+            </h3> -->
             <h3 class="ml-auto">
-                ....because it's way more fun than just looking out the window!
+                <span><img id="header-icon" src="" alt="weather icon" title="weather icon"></span>
+                <span id="today-city"></span>
+                (<span id="today-date"></span>)
             </h3>
         </div>
     </header>
@@ -33,22 +38,22 @@
                 <button class="btn btn-outline-success my-2 my-sm-0  search-button" type="button">Search</button>
             </div>
             <div class="col-12 col-md-7 col-lg-6 col-xl-5">
-                <h3><span id="today-city"></span> (<span id="today-date"></span>) <span><img id="header-icon" src=""
-                            alt="weather icon" title="weather icon"></span> </h3>
                 <p>Temp: <span id="today-temp"></span></p>
                 <p>Wind: <span id="today-wind"></span></p>
                 <p>Humidity: <span id="today-humidity"></span></p>
                 <p>UV Index: <span id="today-uv-index"></span></p>
             </div>
             <div>
-            <div class="custom-control custom-radio col-12 col-md-2 col-lg-3 col-xl-4">
-                <input type="radio" id="select-road" data-select-type="road" name="customRadio" class="custom-control-input">
-                <label class="custom-control-label" for="select-road">Road</label>
-              </div>
-              <div class="custom-control custom-radio">
-                <input type="radio" id="select-mtb" data-select-type="mtb" name="customRadio" class="custom-control-input">
-                <label class="custom-control-label" for="select-mtb">MTB</label>
-              </div>
+                <div class="custom-control custom-radio col-12 col-md-2 col-lg-3 col-xl-4">
+                    <input type="radio" id="select-road" data-select-type="road" value="road" name="customRadio"
+                        class="custom-control-input">
+                    <label class="custom-control-label" for="select-road">Road</label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="select-mtb" data-select-type="mtb" value="mtb" name="customRadio"
+                        class="custom-control-input">
+                    <label class="custom-control-label" for="select-mtb">MTB</label>
+                </div>
             </div>
         </div>
     </section>
@@ -63,6 +68,9 @@
                     Search</button>
             </div>
             <div id="carouselExampleIndicators" class="carousel slide col-12 col-md-8 col-lg-9" data-ride="carousel">
+                <div>
+                    <h3 id="outfit-description"></h3>
+                </div>
                 <div class="carousel-inner" role="listbox">
                     <!-- <div class="carousel-item active">
                         <img class="d-block w-100" src="./assets/images/helmet-road.jpg"
@@ -94,6 +102,14 @@
             </div>
         </div>
     </section>
+
+    <footer class="container-fluid">
+        <div class="col-12 col-md-4 col-lg-3">
+            <nav class="navbar bg-dark text-light mb-5 p-3">
+                <a class="navbar-brand" href="#!">About Me</a>
+            </nav>
+        </div>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>

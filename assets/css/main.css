@@ -1,7 +1,7 @@
 * { 
+    box-sizing:border-box; 
     margin:0; 
     padding:0; 
-    box-sizing:border-box; 
   }
 
 body {
@@ -10,6 +10,13 @@ body {
     line-height: 1;
     margin:0;
   }
+
+  button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+}
   
   textarea {
     background: transparent;
@@ -32,6 +39,17 @@ body {
   /* button{
     width:60%;
   } */
+
+  footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    /* background-color: red;
+    color: white; */
+    text-align: center;
+ }
+
 
   #today-uv-index{
     background-color: yellow;
