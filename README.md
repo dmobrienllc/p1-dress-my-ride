@@ -25,7 +25,7 @@ on 5 day forecast at any destination.
   ensuring clothes are cleaned and ready for upcoming week, or assisting in packing for
   trips by analyzing weather for an upcoming period determined by user.
 
-  Phase 1
+  Phase 1a
   User is presented with the following:
     -text input and search button allowing input of requested search city
     -photo carousel with default photo loaded corresponding to selected radio
@@ -45,22 +45,36 @@ on 5 day forecast at any destination.
   Phase 1b
   User is presented with outfit description above carousel
 
-  Phase 2
+  Phase 1c
   User is presented with heading describing usage of selected outfit.
-  2 supported templates for cold weather, 1 each for road and mtb
 
-  Phase 3
+  Phase 1d
+  User is presented with checkbox allowing choice to ride at night
+  or not.
+  If user checks box, template is loaded containing clothes for the 
+  conditions and also headlamp and taillight system.
+
+  Phase 1e
+  Add 2 supported templates for cold weather, 1 each for road and mtb
+
+  Phase 1f
   User is able to click image and is presented with multiple choices of same type of
   gear item; user can select item and it will replace clicked item in carousel and will
   be saved to ride settings.
 
- Phase 4
- User will be able to 
-    
+ Phase 2 (sub-phases not defined yet)
+ User will be able to specify a date range and be presented with super-set of gear items
+ based on destination forecast.
 
+ User will be able to take picture of item and classify it according to application 
+ dropdown menus.
 
+ User will be able to output list items to pack for trips, check off completed.
 
-
+ Future Phase
+ User will take picture of item and AI will add to appropriate category.
+ 
+ Autobot will do the packing for you!
 
 ## Technologies
 ***
@@ -70,6 +84,7 @@ A list of technologies used within the project:
   * Javascript
   * jQuery
   * MomentJS
+  * Server Side Apis
 
 ## Installation
 ***

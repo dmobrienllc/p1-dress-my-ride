@@ -65,10 +65,7 @@ $(function() {
     //display of 5 day forecast
     let processFetchResponse = data => {
         displayWeatherToday(data);
-
-        let typeSelected = $("input[name='customRadio']:checked").val();
-
-       displayOutfitSelection(typeSelected,data);
+        displayOutfitSelection(data);
     }
 
     //displayWeatherToday
@@ -168,22 +165,34 @@ $(function() {
 
     //displayOutfitSelection
     //displays selection for type; 
-    let displayOutfitSelection = (typeSelected,data) => {
+    let displayOutfitSelection = (data) => {
     
         //hack the template name until you develop something
         //more sophisticated
         let temp;
+        let dayNight;
         
+        let typeSelected = $("input[name='customRadio']:checked").val();
+
         if(data.list[0].main.temp > 60){
             temp = "warm";
         }else{
             temp = "cool";
         }
 
-        //more templates coming on line soon; 
-        let template = `${typeSelected}_${temp}_dry_day`;
+        if($('#day-night-check').prop('checked')){
+            dayNight = "night";
+        }else{
+            dayNight = "day";
+        }
+
+        let template = `${typeSelected}_${temp}_dry_${dayNight}`;
+
+        alert(template);
 
         let outfit = JSON.parse(localStorage.getItem(template));
+
+        console.log(outfit);
 
         $('h3#outfit-description').text(outfit.description);
 
@@ -286,8 +295,11 @@ $(function() {
       let loadTemplateData = () => {
 
           localStorage.setItem("road_warm_dry_day","");
+          localStorage.setItem("road_warm_dry_night","");
           localStorage.setItem("mtb_warm_dry_day","");
+          localStorage.setItem("mtb_warm_dry_night","");
 
+          //BEGIN road_warm_dry_day
           let outfit = new RideOutfit(0,"Warm Day Road Ride","road_warm_dry_day","Perfect outfit for a nice sunny ride on the road.","Road","imageUrl");
           let item = new GearItem(0,"Specialized Road Helmet","Dual Purpose Helmet with removable visor","Helmet","Road","./assets/images/helmet-dual-specialized.jpg");
           outfit.gearItems.push(item);
@@ -311,7 +323,38 @@ $(function() {
               localStorage.setItem("road_warm_dry_day",JSON.stringify(outfit));
           }
 
-          outfit = new RideOutfit(1,"Warm Day MTB Ride","mtb_warm_dry_day","Perfect outfit for a great day tearing it up on the trails.","MTB","imageUrl");
+          //END road_warm_dry_day
+
+          //BEGIN road_warm_dry_night
+          outfit = new RideOutfit(1,"Warm Night Road Ride","road_warm_dry_night","Perfect setup for a nice nighttime cruise.","Road","imageUrl");
+          item = new GearItem(0,"Nightsun Lighting System","Dual Purpose Light System With Taillight","Lighting","Dual","./assets/images/lighting-dual-nightsun.jpg");
+          outfit.gearItems.push(item);
+          
+          item = new GearItem(1,"Specialized Road Helmet","Dual Purpose Helmet with removable visor","Helmet","Road","./assets/images/helmet-dual-specialized.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(2,"Capo Road Jersey","Breathable jersey great for hot/warm/humid riding","Jersey","Road","./assets/images/jersey-road-capo.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(3,"Specialized Lycra Shorts","Super comfortable padded lycra shorts for long road rides.","Shorts","Road","./assets/images/shorts-road-specialized.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(4,"Endura Road Gloves","Excellent road glove with great padding.","Gloves","Road","./assets/images/gloves-road-endura.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(5,"Smart Wool Socks","Smartwool socks, cool and dry on the feet!","Socks","Road","./assets/images/socks-road-smartwool.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(6,"Specialized Road Shoes","High performance road race shoe, carbon plated for power!","Shoes","Road","./assets/images/shoes-road-specialized.jpg");
+          outfit.gearItems.push(item);
+
+          if(!localStorage.getItem("road_warm_dry_night")){
+              localStorage.setItem("road_warm_dry_night",JSON.stringify(outfit));
+          }
+          //END road_warm_dry_night
+
+          //BEGIN mtb_warm_dry_day
+          outfit = new RideOutfit(2,"Warm Day MTB Ride","mtb_warm_dry_day","Perfect outfit for a great day tearing it up on the trails.","MTB","imageUrl");
           item = new GearItem(0,"Specialized MTB Helmet","Dual Purpose Helmet with removable visor","Helmet","MTB","./assets/images/helmet-mtb-specialized.jpg");
           outfit.gearItems.push(item);
 
@@ -335,7 +378,40 @@ $(function() {
            
           if(!localStorage.getItem("mtb_warm_dry_day")){
             localStorage.setItem("mtb_warm_dry_day",JSON.stringify(outfit));
-        }
+            }
+
+        //END mtb_warm_dry_day
+
+        //BEGIN mtb_warm_dry_night
+          outfit = new RideOutfit(3,"Warm Night MTB Ride","mtb_warm_dry_night","Perfect outfit for a nighttime raid tearing it up on the trails.","MTB","imageUrl");
+          item = new GearItem(0,"Nightsun Lighting System","Dual Purpose Light System With Taillight","Lighting","Dual","./assets/images/lighting-dual-nightsun.jpg");
+          outfit.gearItems.push(item);
+          
+          item = new GearItem(1,"Specialized MTB Helmet","Dual Purpose Helmet with removable visor","Helmet","MTB","./assets/images/helmet-mtb-specialized.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(2,"LeadVelo T-Shirt","Super Cool LeadVelo t-shirt from Leadville, CO","T-Shirt","MTB","./assets/images/tshirt-mtb-leadvelo.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(3,"Endura MTB Shorts","Super comfortable and stylish shorts for straight from the trail to the brew pub!","Shorts","MTB","./assets/images/shorts-mtb-endura.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(4,"Fox MTB Gloves","Excellent MTB glove with great padding.","Gloves","MTB","./assets/images/gloves-mtb-fox.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(5,"Smart Wool Socks","Smartwool socks, cool and dry on the feet!","Socks","MTB","./assets/images/socks-mtb-smartwool.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(6,"Specialized MTB Shoes","Tough, comfortable mtb shoe for long days on the trail.","Shoes","MTB","./assets/images/shoes-mtb-specialized.jpg");
+          outfit.gearItems.push(item);
+
+          item = new GearItem(7,"Poison Spider Cycles Bandana","Keeps you looking and feeling cool!","Bandana","MTB","./assets/images/bandana-mtb-poisonspider.jpg");
+          outfit.gearItems.push(item);
+           
+          if(!localStorage.getItem("mtb_warm_dry_night")){
+            localStorage.setItem("mtb_warm_dry_night",JSON.stringify(outfit));
+            }
+        //END mtb_warm_dry_night
       }
 
     //initialize main page elements
@@ -405,143 +481,3 @@ $(function() {
 
     init();
 });
-
-
-
-
-
-
-
-// $(function(){
-
-//     //CLASSES
-//     class GearItem{
-//         constructor(index, name,type,usage,initials) {
-//           this.index = index;
-//           this.name = name;
-//           this.type = type;
-//           this.usage = usage;
-//           this.initials = initials;
-//         }
-//       }
-
-//     //do you have template outfits instead? I'd say you
-//     //should, it would make the logic way easier
-//     class RideOutfit{
-
-//     }
-//     //END CLASSES
-//     let searchNamesArray = [];
-//     let cardParentDiv = $("div.card-row");
-//     let dateCardCnt = 0;
-
-//     let fetchWeatherData = () => {
-//         //preselect some cities; this could be customized by user
-//         //let cities = ["Auckland", "Christchurch", "Dunedin", "Akaroa", "Kaikoura", "Wellington", "Invercargill"];
-//         let cities = ["Reykjavik", "Selfoss", "Akureyri"];
-//         const apiKey = "1602cf34096adba596dbd657831f5ce9";
-
-//         for (i = 0; i < cities.length; i++) {
-//             city = cities[i];
-
-//             let queryURL = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&cnt=40&appid=${apiKey}`;
-//             alert(queryURL);
-//             fetch(queryURL,{
-//                 method: 'GET', // *GET, POST, PUT, DELETE, etc.
-//                 mode: 'same-origin', // no-cors, *cors, same-origin
-//                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-//                 credentials: 'same-origin', // include, *same-origin, omit
-//                 headers: {
-//                   'Content-Type': 'application/json'
-//                   // 'Content-Type': 'application/x-www-form-urlencoded',
-//                 }})
-//                 .then(function (response) {
-//                     if (response.ok) {
-//                         response.json().then(function (data) {
-//                             displayForecastData(data);
-//                         });
-//                     } else {
-//                         //this would be a modal dialog rather than console log
-//                         console.log('Not OK: ' + response.statusText);
-//                     }
-//                 })
-//                 .catch(function (error) {
-//                     alert(error);
-//                 });
-//         }
-//     }
-
-    // let fetchWeatherData = city => {
-    //         const apiKey = "1602cf34096adba596dbd657831f5ce9";
-    //         let queryURL = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&cnt=40&appid=${apiKey}`;
-    //         alert(queryURL);
-
-    //         fetch(queryURL)
-    //             .then(function (response) {
-    //                 if (response.ok) {
-    //                     response.json().then(function (data) {
-    //                         displayForecastData(data);
-    //                     });
-    //                 } else {
-    //                     //this would be a modal dialog rather than console log
-    //                     alert("Not ok");
-    //                     console.log('Not OK: ' + response.statusText);
-    //                 }
-    //             })
-    //             .catch(function (error) {
-    //                 alert("Error: " + error);
-    //                 console.log(error);
-    //             });
-    // }
-
-//     //displayForecastData
-//     //mashup layer over display of today's weather and
-//     //display of 5 day forecast
-//     let displayForecastData = data => {
-//         displayWeatherToday(data);
-//         //displayForecastCards(data);
-//     }
-
-//     //displayWeatherToday
-//     //displays today's weather in main card
-//     let displayWeatherToday = data => {
-//         let citySpan = $("span#today-city");
-//         let dateSpan = $("span#today-date");
-//         let tempSpan = $("span#today-temp");
-//         let windSpan = $("span#today-wind");
-//         let imgEl = $("img#today-icon");
-//         let humSpan = $("span#today-humidity");
-//         let uvIndexSpan = $("span#today-uv-index");
-
-//         alert("City: " + data.city.name);
-
-//         citySpan.text(data.city.name);
-//         dateSpan.text(moment(data.list[0].dt_txt.substring(0,10),"YYYY-MM-DD").format("M/D/YYYY"));
-//         tempSpan.text(data.list[0].main.temp + " F°");
-//         windSpan.text(data.list[0].wind.speed + " MPH");
-//         humSpan.text(data.list[0].main.humidity + "%");
-//         uvIndexSpan.text("33");
-
-//         let iconCode = data.list[0].weather[0].icon;
-//         imgEl.attr("src",`http://openweathermap.org/img/w/${iconCode}.png`);
-//     }
-
-//     //END FETCH CALLS
-    
-//     let init = () => {
-
-//         let searchCityButton = $("button.btn-search-city");
-//         searchCityButton.on('click',function(event){
-//             let searchInput = $("input.search-input").val();
-//             alert("Search City Clicked");
-
-//             fetchWeatherData(searchInput);
-//             //saveSearchCity(searchInput);
-//             $("input.search-input").val('')
-//         });
-//     }
-
-  
-//     init();
-
-// });
