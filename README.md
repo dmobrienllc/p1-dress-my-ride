@@ -9,11 +9,11 @@
 5. [FAQs](#faqs)
 ### General Info
 ***
-### dress-my-ride, because apparently I can't just walk outside and look at the weather!
+### aka gear-bot(), because apparently I can't just walk outside and look at the weather!
 
 Web based application showing the user at a glance the proper attire to be 
 worn for that days' ride. Also makes recommendations for trip packing based
-on 5 day forecast at any destination.
+on 5 day forecast at any destination. Yes.
 
 ### Screenshot
 ***
@@ -49,7 +49,7 @@ on 5 day forecast at any destination.
   User is presented with heading describing usage of selected outfit.
 
   Phase 1d
-  User is presented with checkbox allowing choice to ride at night
+  User is presented with checkbox allowing choice to select night gear
   or not.
   If user checks box, template is loaded containing clothes for the 
   conditions and also headlamp and taillight system.
