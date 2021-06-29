@@ -608,7 +608,6 @@ $(function () {
 
             if (searchInput.length > 0) {
                 let success = fetchForecastData(searchInput);
-                alert("Success? : " + success);
                 $("input#search-input").val('')
 
                 if(success){
