@@ -41,7 +41,8 @@ $(function () {
     //fetchForecastData
     //returns data from openweather api in json format
     let fetchForecastData = city => {
-        localStorage.setItem("last-search-city", city)
+        let isFetchSuccess = true;
+
         const apiKey = "1602cf34096adba596dbd657831f5ce9";
         let queryURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&cnt=65&appid=${apiKey}`;
 
@@ -49,15 +50,19 @@ $(function () {
             .then(function (response) {
                 if (response.ok) {
                     response.json().then(function (data) {
+                        localStorage.setItem("last-search-city", city);
                         processWeatherFetchResponse(data);
                     });
                 } else {
                     console.log('Not OK: ' + response.statusText);
+                    isFetchSuccess = false;
                 }
             })
             .catch(function (error) {
                 console.log(error);
-            });
+                isFetchSuccess = false;
+            })
+            return isFetchSuccess;
     }
 
     //processWeatherFetchResponse
@@ -79,14 +84,6 @@ $(function () {
         
         const googleApiKey = "1602cf34096adba596dbd657831f5ce9";
         let googleQueryUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${googleApiKey}`;
-
-        // let queryUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
-        //let queryUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${city},+MN&key={apiKey}`;
-        //     <div class="row">
-        //     <p id="windy-iframe"><iframe width="500" height="300"
-        //             src="https://embed.windy.com/embed2.html?lat=64.146&lon=21.942&detailLat=64.146&detailLon=21.942&width=650&height=450&zoom=8&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1"
-        //             frameborder="0"></iframe></p>
-        // </div>
 
         fetch(googleQueryUrl, {
             method: 'GET', // or 'PUT'
@@ -113,7 +110,6 @@ $(function () {
     //parses latitude and longitude from windy.com api and
     //passes to modal dialog
     let processGeolocationFetchResponse = data => {
-        alert("Geolocation fetch response");
         console.log(data);
     }
 
@@ -244,12 +240,13 @@ $(function () {
     let addCarouselItem = (index, gearItem) => {
 
         let divEl = $('<div>').addClass("carousel-item");
+        let divFlexEl = $('<div>').addClass("d-flex justify-content-center");
 
         if (gearItem.index === 0) {
             divEl.addClass("active");
         }
 
-        let imgEl = $('<img>').addClass("d-block w-100");
+        let imgEl = $('<img>').addClass("d-block w-100 rounded-pill");
         imgEl.attr("src", gearItem.imgUrl);
         imgEl.attr("data-src", gearItem.imgUrl)
         imgEl.attr("alt", gearItem.name);
@@ -265,8 +262,9 @@ $(function () {
         h3CaptEl.append(pCaptEl);
         divCaptEl.append(h3CaptEl);
 
-        divEl.append(imgEl);
-        divEl.append(divCaptEl);
+        divFlexEl.append(imgEl);
+        divFlexEl.append(divCaptEl);
+        divEl.append(divFlexEl);
         carouselDivEl.append(divEl);
 
         //event handler facilitating choosing different item
@@ -328,7 +326,7 @@ $(function () {
         $(searchNamesArray).each(function (index, item) {
             let liEl = $("<li>").attr("id", index);
             let buttonEl = $("<button>").attr("type", "button").attr("data-search-city", item)
-            buttonEl.addClass("btn btn-outline-success my-2 my-sm-0  saved-search-button");
+            buttonEl.addClass("btn btn-outline-dark my-2 my-sm-0 mb-2 saved-search-button");
             buttonEl.text(item);
 
             liEl.append(buttonEl);
@@ -609,31 +607,28 @@ $(function () {
             let searchInput = $("input#search-input").val();
 
             if (searchInput.length > 0) {
-                fetchForecastData(searchInput);
-                saveSearchCity(searchInput);
+                let success = fetchForecastData(searchInput);
+                alert("Success? : " + success);
                 $("input#search-input").val('')
+
+                if(success){
+                    saveSearchCity(searchInput);
+                }else{
+                    $('#search-validate-modal').modal('toggle');
+                    $('#search-validate-modal').modal('show'); 
+                }
+                
             } else {
-                //snow modal instead of alert
-                alert("You must enter a city name!");
-                // $('#myModal').modal('toggle');
-                // $('#myModal').modal('show');
-                // $('#myModal').modal('hide');   
+                $('#search-validate-modal').modal('toggle');
+                $('#search-validate-modal').modal('show'); 
             }
         });
 
         let getWindPatternButton = $("button#wind-patterns");
         getWindPatternButton.on('click', function (event) {
-            alert("Handler is called");
             fetchGeolocationData();
             $('#modal-search-city').text(localStorage.getItem("last-search-city"));
         });
-
-        // let searchGeoButton = $('button#geo-search');
-        // searchGeoButton.on('click', function (event) {
-        //     //let searchInput = $("input#search-input").val();
-        //     alert("Handler is called");
-        //     fetchGeolocationData("Minneapolis");
-        // });
 
         let clearSearchButton = $("button.clear-search-button");
         clearSearchButton.on('click', function (event) {

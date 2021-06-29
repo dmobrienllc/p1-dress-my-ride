@@ -58,18 +58,24 @@ on 5 day forecast at any destination. Yes.
   Add 2 supported templates for cold weather, 1 each for road and mtb
 
   Phase 1f
+
+ Phase 2a
+  User is able to click button 'Get Detail Wind Patterns' and be presented with modal 
+  dialog presenting wind patterns at latitude and longitude for selected city.
+
+  Phase 2b
   User is able to click image and is presented with multiple choices of same type of
   gear item; user can select item and it will replace clicked item in carousel and will
   be saved to ride settings.
 
- Phase 2 (sub-phases not defined yet)
+  Phase 2c
  User will be able to specify a date range and be presented with super-set of gear items
- based on destination forecast.
+ based on destination forecast. User will be able to output list items to pack for trips, 
+ check off completed.
 
+ Phase 2d
  User will be able to take picture of item and classify it according to application 
  dropdown menus.
-
- User will be able to output list items to pack for trips, check off completed.
 
  Future Phase
  User will take picture of item and AI will add to appropriate category.
