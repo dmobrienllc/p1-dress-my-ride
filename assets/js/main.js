@@ -1,5 +1,4 @@
 $(function() {
-
     let carouselDivEl = $('div.carousel-inner');
 
      //CLASSES
@@ -49,7 +48,7 @@ $(function() {
         .then(function (response) {
         if (response.ok) {
             response.json().then(function (data) {
-                processFetchResponse(data);
+                processWeatherFetchResponse(data);
             });
         } else {
             console.log('Not OK: ' + response.statusText);
@@ -60,12 +59,41 @@ $(function() {
         });
     }
 
-    //processFetchResponse
+    //processWeatherFetchResponse
     //mashup layer over display of today's weather and
     //display of 5 day forecast
-    let processFetchResponse = data => {
+    let processWeatherFetchResponse = data => {
         displayWeatherToday(data);
         displayOutfitSelection(data);
+    }
+
+    //fetchForecastData
+    //returns data from openweather api in json format
+    let fetchGelocationData = city =>{
+        const googleApiKey = "1602cf34096adba596dbd657831f5ce9";
+        let queryURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&cnt=65&appid=${apiKey}`;
+        
+        // let queryUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
+        let queryUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=Minneapolis,+MN&key={apiKey}`;
+        //     <div class="row">
+    //     <p id="windy-iframe"><iframe width="500" height="300"
+    //             src="https://embed.windy.com/embed2.html?lat=64.146&lon=21.942&detailLat=64.146&detailLon=21.942&width=650&height=450&zoom=8&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1"
+    //             frameborder="0"></iframe></p>
+    // </div>
+
+        fetch(queryURL)
+        .then(function (response) {
+        if (response.ok) {
+            response.json().then(function (data) {
+                processWeatherFetchResponse(data);
+            });
+        } else {
+            console.log('Not OK: ' + response.statusText);
+        }
+        })
+            .catch(function (error) {
+            console.log(error);
+        });
     }
 
     //displayWeatherToday
