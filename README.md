@@ -9,11 +9,12 @@
 5. [FAQs](#faqs)
 ### General Info
 ***
-### aka gear-bot(), because apparently I can't just walk outside and look at the weather!
+### aka ride-bot(), because apparently I can't just walk outside and look at the weather!
 
-Web based application showing the user at a glance the proper attire to be 
-worn for that days' ride. Also makes recommendations for trip packing based
-on 5 day forecast at any destination. Yes.
+Web based application assisting cyclist in making decisions about proper attire to be worn on ride, direction and wind speed to assist in route planning. 
+
+Future version makes recommendations for trip packing based on 5 day forecast at any destination
+and will generate packing list based on choices.
 
 ### Screenshot
 ***
@@ -25,11 +26,15 @@ on 5 day forecast at any destination. Yes.
   ensuring clothes are cleaned and ready for upcoming week, or assisting in packing for
   trips by analyzing weather for an upcoming period determined by user.
 
+  PHASE 1
   Phase 1a
   User is presented with the following:
     -text input and search button allowing input of requested search city
     -photo carousel with default photo loaded corresponding to selected radio
     -radio buttons allowing toggling between road and mtb
+    -check box allowing temperature override to present cool weather gear.
+    -'Get Detailed Wind Patterns' button facilitating presentation of local wind
+      patterns for selected ride area.
     -'Clear Search' button allowing clearing of saved cities.
 
   User enters search city, selects appropriate apparel type radio button, clicks 'Search' 
@@ -41,6 +46,8 @@ on 5 day forecast at any destination. Yes.
   User can toggle between apparel type choices and be presented with appropriate choices.
 
   User search city choices will be saved in left nav.
+
+  User will be able to click 'Clear Search' and be returned to default settings.
 
   Phase 1b
   User is presented with outfit description above carousel
@@ -58,9 +65,12 @@ on 5 day forecast at any destination. Yes.
   Add 2 supported templates for cold weather, 1 each for road and mtb
 
   Phase 1f
+  User is able to click button 'Get Detailed Wind Patterns' and be presented with modal 
+  dialog presenting wind patterns at latitude and longitude for selected city.
 
+PHASE 2
  Phase 2a
-  User is able to click button 'Get Detail Wind Patterns' and be presented with modal 
+  User is able to click button 'Get Detailed Wind Patterns' and be presented with modal 
   dialog presenting wind patterns at latitude and longitude for selected city.
 
   Phase 2b
@@ -74,6 +84,10 @@ on 5 day forecast at any destination. Yes.
  check off completed.
 
  Phase 2d
+ User will be able to bring up strava information on local rides, records set for various
+ rides, etc.
+
+ Phase 2e
  User will be able to take picture of item and classify it according to application 
  dropdown menus.
 
@@ -91,6 +105,8 @@ A list of technologies used within the project:
   * jQuery
   * MomentJS
   * Server Side Apis
+    -open weather api (forecast data)
+    -google location api https://maps.googleapis.com/maps/api/geocode(returns latitude and      longitude data for search)
 
 ## Installation
 ***
@@ -106,71 +122,3 @@ Q Is this application awesome?
 
 A Why yes it is!
 ---
-
-
-# Unit 07: Project 1
-
-## Overview
-
-Welcome to Project 1! This is an important step in your full-stack journey as you will now use your newly acquired skills and knowledge to build web application from scratch. With your team, you will conceive and execute a design that solves a real-world problem by integrating data received from multiple server-side API requests. 
-
-Because you will be working collaboratively, you will learn agile development methodologies and implement feature and bug fixes using git branch workflow and pull requests.
-
-## Key Topics
-
-The following topics will be covered in this unit:
-
-* [Server-side APIs](https://en.wikipedia.org/wiki/Web_API)
-
-* [Git branching workflow](https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows)
-
-* [Agile software development](https://en.wikipedia.org/wiki/Agile_software_development)
-
-## Learning Objectives
-
-You will be employer-ready if you are able to:
-
-* Speak technically about a feature you implemented in your project
-
-* Explain and execute git branching workflow in a collaborative project
-
-* Resolve merge conflicts
-
-* Explain agile software development
-
-* Design, build, and deploy a client-side web application using GitHub Pages
-
-* Prepare a professional presentation and repository README for your project
-
-## Homework
-
-With your team, you'll conceive and execute a design that solves a real-world problem by integrating data received from multiple server-side API requests. You will also learn about agile development methodologies to help you work collaboratively. You will implement feature and bug fixes using git branch workflow and pull requests. 
-
-You will write your own user stories and acceptance criteria in GitHub Issues to help your team stay on track with the project. Using GitHub Project as a means to track the status of your project tasks will help you understand the benefits of Kanban boards. 
-
-## Career Connection
-
-For more information about Career Services, including coding milestones, demo days, technical toolkits, workshops, and additional resources, visit the [Career Services website](https://mycareerspot.org/).
-
-## Heads-Up
-
-In the next unit, you'll continue to work on your group projects. You'll end the week by presenting your project to your class. Once your project is complete, you'll want to update your professional materials and add your new project to your portfolio.
-
-## Resources
-
-Here are some additional resources to help solidify the topics covered in this unit.
-
-### Full-Stack Blog Posts
-
-Check out the [Full-Stack Blog](https://coding-boot-camp.github.io/full-stack/) for additional resources, like walkthroughs, articles, and installation guides.
-
-  * 📖 [API Resources](https://coding-boot-camp.github.io/full-stack/apis/api-resources)
-
-### General
-
-Refer to these resources for additional information about topics covered in this unit.
-
-  * 📖 [Learn Enough Git to Be Dangerous](https://www.learnenough.com/git-tutorial/getting_started)
-
-- - -
-© 2021 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.

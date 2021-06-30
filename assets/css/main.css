@@ -1,156 +1,156 @@
 * { 
-    box-sizing:border-box; 
-    margin:0; 
-    padding:0; 
-  }
+  box-sizing:border-box; 
+  margin:0; 
+  padding:0; 
+}
 
 body {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1;
-    margin: 5px;
-    padding-bottom: 50px;
-    background-color: lightblue;
-  }
-
-  button {
-    display: block;
-    margin: 10px 0;
-    padding: 10px;
-    width: 100%;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  margin: 5px;
+  padding-bottom: 50px;
+  background-color: lightblue;
 }
-  
-  /* textarea {
-    background: transparent;
-    border: none;
-    resize:both;
-    color: #000000;
-    border-left: 1px solid black;
-    padding: 1px;
-    font-size:12px;
-     width:100%;
-    height: 100%; 
-    min-height: 100%;
-    min-width: 100%;
-  } */
 
-  ul{
-    list-style-type: none;
-  }
+button {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+}
 
-  /* button{
-    width:60%;
-  } */
+/* textarea {
+  background: transparent;
+  border: none;
+  resize:both;
+  color: #000000;
+  border-left: 1px solid black;
+  padding: 1px;
+  font-size:12px;
+   width:100%;
+  height: 100%; 
+  min-height: 100%;
+  min-width: 100%;
+} */
 
-  footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    /* background-color: red;
-    color: white; */
-    text-align: center;
-    color: white;
+ul{
+  list-style-type: none;
+}
 
- }
+/* button{
+  width:60%;
+} */
 
- div #radio-parent-container{
-   border-radius: 1px;
-   border:solid;
-   border-color: black;
- }
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  /* background-color: red;
+  color: white; */
+  text-align: center;
+  color: white;
 
-  #today-uv-index{
-    background-color: yellow;
-  }
+}
 
-  .remove-card-div{
-    border: 1px solid white;
-  }
-  
-  .jumbotron {
-    text-align: center;
-    background-color: transparent;
-    color: black;
-    border-radius: 0;
-    border-bottom: 10px solid black;
-  }
-  
-  .description {
-    white-space: pre-wrap;
-  }
-  
-  .time-block {
-    text-align: center;
-    border-radius: 1px;
-    border: 1px solid black;
-  }
-  
-  /* .row {
-    white-space: pre-wrap;
-    height: 80px;
-    border-top: 1px solid white;
-  } */
-  
-  .hour {
-    background-color: #ffffff;
-    color: #000000;
-    border-top: 1px dashed #000000;
-  }
-  
-  .past {
-    background-color: #d3d3d3;
-    color: grey;
-  }
-  
-  .present {
-    background-color: #ff6961;
-    color: red;
-  }
-  
-  .future {
-    background-color: #77dd77;
-    color: green;
-  }
-  
-  .save-button {
-    border-left: 1px solid black;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    background-color: #06aed5;
-    color: white;
-    min-width: 100%;
-    min-height: 100%;
-  }
-  
-  .saveBtn i:hover {
-    font-size: 20px;
-    transition: all 0.3s ease-in-out;
-  }
+div #radio-parent-container{
+ border-radius: 1px;
+ border:solid;
+ border-color: black;
+}
 
-  #saved-search-cities li{
-      text-decoration: none;
-  }
-  
+#today-uv-index{
+  background-color: yellow;
+}
+
+.remove-card-div{
+  border: 1px solid white;
+}
+
+.jumbotron {
+  text-align: center;
+  background-color: transparent;
+  color: black;
+  border-radius: 0;
+  border-bottom: 10px solid black;
+}
+
+.description {
+  white-space: pre-wrap;
+}
+
+.time-block {
+  text-align: center;
+  border-radius: 1px;
+  border: 1px solid black;
+}
+
+/* .row {
+  white-space: pre-wrap;
+  height: 80px;
+  border-top: 1px solid white;
+} */
+
+.hour {
+  background-color: #ffffff;
+  color: #000000;
+  border-top: 1px dashed #000000;
+}
+
+.past {
+  background-color: #d3d3d3;
+  color: grey;
+}
+
+.present {
+  background-color: #ff6961;
+  color: red;
+}
+
+.future {
+  background-color: #77dd77;
+  color: green;
+}
+
+.save-button {
+  border-left: 1px solid black;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-color: #06aed5;
+  color: white;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.saveBtn i:hover {
+  font-size: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+#saved-search-cities li{
+    text-decoration: none;
+}
+
 .carousel-item {
-    width: 80%; 
+  width: 80%; 
 }
 
 .carousel-content {
-  position: absolute;
-  bottom: 10%;
-  left: 5%;
-  z-index: 20;
-  color: white;
-  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+position: absolute;
+bottom: 10%;
+left: 5%;
+z-index: 20;
+color: white;
+text-shadow: 0 1px 2px rgba(0,0,0,.6);
 }
 
 .carousel-inner > .item > img, .carousel-inner > .item > a > img {
-  width: 60%;
-  margin: auto;
+width: 60%;
+margin: auto;
 }
 
 .carousel-inner img {
-  margin: auto;
+margin: auto;
 }

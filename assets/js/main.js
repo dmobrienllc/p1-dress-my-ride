@@ -13,8 +13,6 @@ $(function () {
         }
     }
 
-    //do you have template outfits instead? I'd say you
-    //should, it would make the logic way easier
     class RideOutfit {
         constructor(index, name, templateName, description, type, imgUrl) {
             this.index = index;
@@ -292,7 +290,6 @@ $(function () {
 
     //clearCarousel
     //clears carousel and replaces default image
-    //TODO: Need default image
     let clearCarousel = () => {
         let success = $('.carousel-inner,.carousel-indicators,.carousel-control-prev,.carousel-control-next').empty()
         $('h3#outfit-description').text("");
@@ -639,6 +636,8 @@ $(function () {
             clearWeatherToday();
             addDefaultCarouselItem('road');
             $('input#select-road').prop('checked', true);
+            $('input#day-night-check').prop('checked', false);
+            $('input#temp-override-check').prop('checked', false);
         });
 
         let selectRoadRadio = $('input#select-road');
